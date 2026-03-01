@@ -12,7 +12,7 @@ export const HomeScreen = () => {
 
     return (
         <ScrollView
-            className="flex-1 bg-gray-50 dark:bg-gray-900"
+            className="flex-1 bg-background"
         >
             <View className="p-5">
                 <View className="mb-6 flex-row items-center justify-between">
