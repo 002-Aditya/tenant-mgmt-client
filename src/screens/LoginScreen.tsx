@@ -3,7 +3,11 @@ import { View, Text, Image, StyleSheet, Pressable, Platform, useWindowDimensions
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Animated, { FadeInDown, FadeInUp, withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import { useTheme } from '../context/ThemeContext';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export const LoginScreen = () => {
     const navigation = useNavigation<any>();
@@ -23,15 +27,45 @@ export const LoginScreen = () => {
         }
     };
 
-    const handleLoginPress = () => {
+    const url = Linking.useURL();
+
+    React.useEffect(() => {
+        if (url) {
+            const parsedUrl = Linking.parse(url);
+            if (parsedUrl.queryParams?.success === 'true') {
+                navigation.navigate('Home');
+            }
+        }
+    }, [url, navigation]);
+
+    const handleLoginPress = async () => {
         try {
             buttonScale.value = withSpring(0.95, {}, () => {
                 buttonScale.value = withSpring(1);
             });
 
-            setTimeout(() => {
-                navigation.navigate('Home');
-            }, 400);
+            if (Platform.OS === 'web') {
+                const redirectParams = encodeURIComponent(window.location.href);
+                window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}`; // Adjust according to backend port
+            } else {
+                const redirectUrl = Linking.createURL('login');
+                const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+                
+                // Note: local tests might need ngrok or your correct IP instead of localhost/10.0.2.2 if on physical device
+                const result = await WebBrowser.openAuthSessionAsync(
+                    authUrl, // The route mapped in app.js + googleAuth.js
+                    redirectUrl
+                );
+
+                if (result.type === 'success' && result.url) {
+                    const parsedUrl = Linking.parse(result.url);
+                    if (parsedUrl.queryParams?.success === 'true') {
+                        // User authenticated successfully
+                        // e.g., store token if parsedUrl.queryParams.token exists
+                        navigation.navigate('Home');
+                    }
+                }
+            }
         } catch (error) {
             console.error(error);
         }
