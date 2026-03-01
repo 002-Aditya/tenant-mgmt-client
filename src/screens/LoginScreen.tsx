@@ -46,7 +46,7 @@ export const LoginScreen = () => {
 
             if (Platform.OS === 'web') {
                 const redirectParams = encodeURIComponent(window.location.href);
-                window.location.href = `http://127.0.0.1:3000/auth/google?redirectUrl=${redirectParams}`; // Adjust according to backend port
+                window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}`; // Adjust according to backend port
             } else {
                 const redirectUrl = Linking.createURL('login');
                 const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
