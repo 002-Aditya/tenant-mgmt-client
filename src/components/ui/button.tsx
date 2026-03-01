@@ -9,7 +9,7 @@ const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default: 'bg-blue-500 hover:bg-blue-500/90 dark:bg-blue-600 dark:hover:bg-blue-600/90',
+                default: 'bg-neutral-900 hover:bg-neutral-900/90 dark:bg-neutral-50 dark:hover:bg-neutral-50/90',
                 destructive: 'bg-red-500 hover:bg-red-500/90',
                 outline: 'border border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800',
                 secondary: 'bg-gray-200 hover:bg-gray-200/80 dark:bg-gray-800 dark:hover:bg-gray-800/80',
@@ -35,7 +35,7 @@ const buttonTextVariants = cva(
     {
         variants: {
             variant: {
-                default: 'text-white',
+                default: 'text-neutral-50 dark:text-neutral-900',
                 destructive: 'text-white',
                 outline: 'text-gray-900 dark:text-gray-100',
                 secondary: 'text-gray-900 dark:text-gray-100',

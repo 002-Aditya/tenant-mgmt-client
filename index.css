@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light Theme stays mostly the same but cleaned up */
+.light,
+[data-theme="light"] {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --surface: #f4f4f5;
+    --primary: #18181b;
+    --primary-foreground: #fafafa;
+    --primary-hover: #27272a;
+    --primary-active: #3f3f46;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --secondary-hover: #e4e4e7;
+    --border: #e4e4e7;
+    --outline: #09090b;
+    --outline-foreground: #09090b;
+    --outline-hover-bg: rgba(9, 9, 11, 0.1);
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --danger: #dc2626;
+    --danger-foreground: #ffffff;
+}
+
+/* Modernized Dark Theme */
+.dark,
+[data-theme="dark"] {
+    /* Pure black for the deepest background layer */
+    --background: #0d0dad;
+
+    /* Slightly lighter for cards/sections to create "elevation" */
+    --surface: #121214;
+
+    /* Off-white text for better readability than pure white */
+    --foreground: #ececed;
+
+    /* Primary buttons: Vibrant white/gray */
+    --primary: #fafafa;
+    --primary-foreground: #18181b;
+    --primary-hover: #e4e4e7;
+    --primary-active: #d4d4d8;
+
+    /* Secondary buttons/inputs: Soft gray that stands out from background */
+    --secondary: #1e1e21;
+    --secondary-foreground: #fafafa;
+    --secondary-hover: #27272a;
+
+    /* Border: Subtle and not too harsh */
+    --border: #27272a;
+
+    --outline: #fafafa;
+    --outline-foreground: #fafafa;
+    --outline-hover-bg: rgba(250, 250, 250, 0.05);
+
+    /* Muted text and backgrounds */
+    --muted: #18181b;
+    --muted-foreground: #a1a1aa;
+
+    --danger: #ef4444;
+    --danger-foreground: #09090b;
+}
+
+@theme inline {
+    /* --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-surface: var(--surface);
+    --color-border: var(--border);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-active: var(--primary-active);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary-hover: var(--secondary-hover);
+    --color-outline: var(--outline);
+    --color-outline-foreground: var(--outline-foreground);
+    --color-outline-hover-bg: var(--outline-hover-bg);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground); */
+}
