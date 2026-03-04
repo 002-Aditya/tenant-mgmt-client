@@ -65,29 +65,15 @@ export const LoginScreen = () => {
       });
 
       const deviceAndLocationData = await collectAndSendUserInfo();
-      const formData = new FormData();
-      formData.append('updateMap', JSON.stringify(deviceAndLocationData));
+      const updateMapStr = encodeURIComponent(JSON.stringify(deviceAndLocationData));
 
       if (Platform.OS === 'web') {
         const redirectParams = encodeURIComponent(window.location.href);
-        formData.append('redirectUrl', redirectParams);
-
-        await fetch('http://localhost:3000/auth/google', {
-          method: 'POST',
-          body: formData,
-        }).catch(() => {});
-
-        window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}`;
+        window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}&updateMap=${updateMapStr}`;
       } else {
         const redirectUrl = Linking.createURL('login');
-        formData.append('redirectUrl', redirectUrl);
+        const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}&updateMap=${updateMapStr}`;
 
-        await fetch('http://10.0.2.2:3000/auth/google', {
-          method: 'POST',
-          body: formData,
-        }).catch(() => {});
-
-        const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
         const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
 
         if (result.type === 'success' && result.url) {
