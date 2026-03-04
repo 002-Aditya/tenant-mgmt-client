@@ -3,43 +3,87 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { AppNavigator } from './src/navigation/AppNavigator';
-
-// Import global CSS for Tailwind
 import './src/styles/global.css';
-
 import { PortalHost } from '@rn-primitives/portal';
 
 const NavigationWrapper = () => {
   const { isDark } = useTheme();
 
+  const darkThemeColors = {
+    ...DarkTheme.colors,
+    primary: '#3b82f6',
+    background: '#09090b',
+    card: '#18181b',
+    text: '#ffffff',
+    border: '#27272a',
+    notification: '#ef4444',
+    textMuted: '#a1a1aa',
+    textSubtle: '#71717a',
+    textLabel: '#e4e4e7',
+    inputBg: '#09090b',
+    inputBorder: '#3f3f46',
+    inputPlaceholder: '#52525b',
+    iconTint: '#fafafa',
+    buttonPrimaryBg: '#ffffff',
+    buttonPrimaryText: '#111827',
+    landlordBg: 'rgba(59, 130, 246, 0.1)',
+    landlordBorder: '#3b82f6',
+    landlordIconBg: 'rgba(30, 58, 138, 0.4)',
+    landlordIconTint: '#60a5fa',
+    landlordCheckBg: '#3b82f6',
+    tenantBg: 'rgba(34, 197, 94, 0.1)',
+    tenantBorder: '#22c55e',
+    tenantIconBg: 'rgba(20, 83, 45, 0.4)',
+    tenantIconTint: '#4ade80',
+    tenantCheckBg: '#22c55e',
+    roleCardBgDefault: '#18181b',
+    roleCardBorderDefault: '#27272a',
+    prefixBg: '#18181b',
+    prefixText: '#d4d4d8',
+  };
+
+  const lightThemeColors = {
+    ...DefaultTheme.colors,
+    primary: '#3b82f6',
+    background: '#f9fafb',
+    card: '#ffffff',
+    text: '#111827',
+    border: '#e5e7eb',
+    notification: '#ef4444',
+    textMuted: '#6b7280',
+    textSubtle: '#9ca3af',
+    textLabel: '#111827',
+    inputBg: '#f9fafb',
+    inputBorder: '#d1d5db',
+    inputPlaceholder: '#a1a1aa',
+    iconTint: '#09090b',
+    buttonPrimaryBg: '#111827',
+    buttonPrimaryText: '#ffffff',
+    landlordBg: '#eff6ff',
+    landlordBorder: '#2563eb',
+    landlordIconBg: '#dbeafe',
+    landlordIconTint: '#2563eb',
+    landlordCheckBg: '#2563eb',
+    tenantBg: '#f0fdf4',
+    tenantBorder: '#16a34a',
+    tenantIconBg: '#dcfce3',
+    tenantIconTint: '#16a34a',
+    tenantCheckBg: '#16a34a',
+    roleCardBgDefault: '#ffffff',
+    roleCardBorderDefault: '#e5e7eb',
+    prefixBg: '#f3f4f6',
+    prefixText: '#4b5563',
+  };
+
   return (
     <>
-      <NavigationContainer theme={
-        // Apply correct theme colors to navigation if needed
-        isDark ? {
-          ...DarkTheme,
-          colors: {
-            ...DarkTheme.colors,
-            primary: '#3b82f6',
-            background: '#111827',
-            card: '#1f2937',
-            text: '#f9fafb',
-            border: '#374151',
-            notification: '#ef4444',
-          }
-        } : {
-          ...DefaultTheme,
-          colors: {
-            ...DefaultTheme.colors,
-            primary: '#3b82f6',
-            background: '#f9fafb',
-            card: '#ffffff',
-            text: '#111827',
-            border: '#e5e7eb',
-            notification: '#ef4444',
-          }
+      <NavigationContainer
+        theme={
+          isDark
+            ? { ...DarkTheme, colors: darkThemeColors }
+            : { ...DefaultTheme, colors: lightThemeColors }
         }
-      }>
+      >
         <AppNavigator />
       </NavigationContainer>
       <PortalHost />

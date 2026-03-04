@@ -1,11 +1,41 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */ 
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
-  presets: [require("nativewind/preset")],
-  darkMode: "class",
+  content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
+  presets: [require('nativewind/preset')],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        card: 'var(--card)',
+        text: 'var(--text)',
+        border: 'var(--border)',
+        primary: 'var(--primary)',
+        textMuted: 'var(--textMuted)',
+        textSubtle: 'var(--textSubtle)',
+        textLabel: 'var(--textLabel)',
+        inputBg: 'var(--inputBg)',
+        inputBorder: 'var(--inputBorder)',
+        inputPlaceholder: 'var(--inputPlaceholder)',
+        iconTint: 'var(--iconTint)',
+        buttonPrimaryBg: 'var(--buttonPrimaryBg)',
+        buttonPrimaryText: 'var(--buttonPrimaryText)',
+        landlordBg: 'var(--landlordBg)',
+        landlordBorder: 'var(--landlordBorder)',
+        landlordIconBg: 'var(--landlordIconBg)',
+        landlordIconTint: 'var(--landlordIconTint)',
+        landlordCheckBg: 'var(--landlordCheckBg)',
+        tenantBg: 'var(--tenantBg)',
+        tenantBorder: 'var(--tenantBorder)',
+        tenantIconBg: 'var(--tenantIconBg)',
+        tenantIconTint: 'var(--tenantIconTint)',
+        tenantCheckBg: 'var(--tenantCheckBg)',
+        roleCardBgDefault: 'var(--roleCardBgDefault)',
+        roleCardBorderDefault: 'var(--roleCardBorderDefault)',
+        prefixBg: 'var(--prefixBg)',
+        prefixText: 'var(--prefixText)',
+      },
+    },
   },
   plugins: [require('tailwindcss-animate')],
-}
-
+};
