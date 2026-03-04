@@ -6,8 +6,8 @@ import Animated, { FadeInDown, FadeInUp, withSpring, useSharedValue, useAnimated
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { useTheme } from '../context/ThemeContext';
-
-WebBrowser.maybeCompleteAuthSession();
+import * as Device from 'expo-device';
+import * as Location from 'expo-location';
 
 export const LoginScreen = () => {
     const navigation = useNavigation<any>();
@@ -20,13 +20,87 @@ export const LoginScreen = () => {
     const buttonScale = useSharedValue(1);
 
     const toggleTheme = () => {
-        try {
-            setTheme(isDark ? 'light' : 'dark');
-        } catch (error) {
-            console.error(error);
-        }
+      try {
+        setTheme(isDark ? 'light' : 'dark');
+      } catch (error) {
+        console.error(error);
+      }
     };
 
+  const collectAndSendUserInfo = async () => {
+    try {
+      const [ipResponse, locationPermission] = await Promise.all([
+        fetch('https://api.ipify.org?format=json').catch(() => ({ json: () => ({ ip: null }) })),
+        Location.requestForegroundPermissionsAsync().catch(() => ({ status: 'denied' })),
+      ]);
+
+      const ipData = await ipResponse?.json().catch(() => ({ ip: null }));
+
+      let location = null;
+      if (locationPermission.status === 'granted') {
+        location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        }).catch(() => null);
+      }
+
+      return {
+        ip: ipData?.ip || null,
+        os: Platform.OS,
+        osVersion: Platform.OS === 'web' ? navigator.appVersion : Device.osVersion || 'unknown',
+        deviceModel: Platform.OS === 'web' ? navigator.userAgent : Device.modelName || 'unknown',
+        latitude: location?.coords?.latitude || null,
+        longitude: location?.coords?.longitude || null,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
+  };
+
+  const handleLoginPress = async () => {
+    try {
+      buttonScale.value = withSpring(0.95, {}, () => {
+        buttonScale.value = withSpring(1);
+      });
+
+      const deviceAndLocationData = await collectAndSendUserInfo();
+      const formData = new FormData();
+      formData.append('updateMap', JSON.stringify(deviceAndLocationData));
+
+      if (Platform.OS === 'web') {
+        const redirectParams = encodeURIComponent(window.location.href);
+        formData.append('redirectUrl', redirectParams);
+
+        await fetch('http://localhost:3000/auth/google', {
+          method: 'POST',
+          body: formData,
+        }).catch(() => {});
+
+        window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}`;
+      } else {
+        const redirectUrl = Linking.createURL('login');
+        formData.append('redirectUrl', redirectUrl);
+
+        await fetch('http://10.0.2.2:3000/auth/google', {
+          method: 'POST',
+          body: formData,
+        }).catch(() => {});
+
+        const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+        const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
+
+        if (result.type === 'success' && result.url) {
+          const parsedUrl = Linking.parse(result.url);
+          if (parsedUrl.queryParams?.success === 'true') {
+            navigation.navigate('Home');
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
     const url = Linking.useURL();
 
     React.useEffect(() => {
@@ -38,38 +112,7 @@ export const LoginScreen = () => {
         }
     }, [url, navigation]);
 
-    const handleLoginPress = async () => {
-        try {
-            buttonScale.value = withSpring(0.95, {}, () => {
-                buttonScale.value = withSpring(1);
-            });
 
-            if (Platform.OS === 'web') {
-                const redirectParams = encodeURIComponent(window.location.href);
-                window.location.href = `http://localhost:3000/auth/google?redirectUrl=${redirectParams}`; // Adjust according to backend port
-            } else {
-                const redirectUrl = Linking.createURL('login');
-                const authUrl = `http://10.0.2.2:3000/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
-                
-                // Note: local tests might need ngrok or your correct IP instead of localhost/10.0.2.2 if on physical device
-                const result = await WebBrowser.openAuthSessionAsync(
-                    authUrl, // The route mapped in app.js + googleAuth.js
-                    redirectUrl
-                );
-
-                if (result.type === 'success' && result.url) {
-                    const parsedUrl = Linking.parse(result.url);
-                    if (parsedUrl.queryParams?.success === 'true') {
-                        // User authenticated successfully
-                        // e.g., store token if parsedUrl.queryParams.token exists
-                        navigation.navigate('Home');
-                    }
-                }
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const animatedButtonStyle = useAnimatedStyle(() => {
         return {
