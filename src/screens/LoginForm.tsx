@@ -10,13 +10,12 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useTheme as useNavigationTheme } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
 
 export const LoginForm = () => {
   const navigation = useNavigation();
   const { setTheme, isDark } = useTheme();
-  const { colors } = useNavigationTheme()
   const { width } = useWindowDimensions();
 
   const isDesktopWeb = width >= 768;
@@ -83,7 +82,7 @@ export const LoginForm = () => {
                   ? 'https://cdn-icons-png.flaticon.com/512/3288/3288108.png'
                   : 'https://cdn-icons-png.flaticon.com/512/581/581426.png',
               }}
-              style={{ width: 18, height: 18, tintColor: colors.iconTint }}
+              className="w-[18px] h-[18px] tint-iconTint"
             />
           </Pressable>
           {isDesktopWeb && (
@@ -134,11 +133,7 @@ export const LoginForm = () => {
                 >
                   <Image
                     source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2635/2635063.png' }}
-                    style={{
-                      width: 28,
-                      height: 28,
-                      tintColor: role === 'landlord' ? colors.landlordIconTint : colors.textSubtle,
-                    }}
+                    className={`w-7 h-7 ${role === 'landlord' ? 'tint-landlordIconTint' : 'tint-textSubtle'}`}
                   />
                 </View>
                 <Text className="font-serif text-[20px] font-bold mb-2 text-center text-text">
@@ -165,11 +160,7 @@ export const LoginForm = () => {
                 >
                   <Image
                     source={{ uri: 'https://cdn-icons-png.flaticon.com/512/1946/1946488.png' }}
-                    style={{
-                      width: 28,
-                      height: 28,
-                      tintColor: role === 'tenant' ? colors.tenantIconTint : colors.textSubtle,
-                    }}
+                    className={`w-7 h-7 ${role === 'tenant' ? 'tint-tenantIconTint' : 'tint-textSubtle'}`}
                   />
                 </View>
                 <Text className="font-serif text-[20px] font-bold mb-2 text-center text-text">
@@ -201,16 +192,14 @@ export const LoginForm = () => {
                 <Text className="text-[14px] font-medium mb-2 text-textLabel">First Name</Text>
                 <TextInput
                   placeholder="e.g. Sarah"
-                  placeholderTextColor={colors.inputPlaceholder}
-                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text"
+                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text placeholder:text-inputPlaceholder"
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Text className="text-[14px] font-medium mb-2 text-textLabel">Last Name</Text>
                 <TextInput
                   placeholder="e.g. Miller"
-                  placeholderTextColor={colors.inputPlaceholder}
-                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text"
+                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text placeholder:text-inputPlaceholder"
                 />
               </View>
             </View>
@@ -227,8 +216,7 @@ export const LoginForm = () => {
                 <Text className="text-[14px] font-medium mb-2 text-textLabel">Date of Birth</Text>
                 <TextInput
                   placeholder="mm/dd/yyyy"
-                  placeholderTextColor={colors.inputPlaceholder}
-                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text"
+                  className="w-full h-12 px-4 rounded-xl border transition-colors outline-none bg-inputBg border-inputBorder text-text placeholder:text-inputPlaceholder"
                 />
               </View>
               <View style={{ flex: 1, position: 'relative', justifyContent: 'flex-end' }}>
@@ -236,9 +224,8 @@ export const LoginForm = () => {
                 <View className="w-full h-12 justify-center relative">
                   <TextInput
                     placeholder="Select gender"
-                    placeholderTextColor={colors.inputPlaceholder}
                     editable={false}
-                    className="w-full h-12 pl-4 pr-10 rounded-xl border transition-colors cursor-pointer outline-none bg-inputBg border-inputBorder text-text"
+                    className="w-full h-12 pl-4 pr-10 rounded-xl border transition-colors cursor-pointer outline-none bg-inputBg border-inputBorder text-text placeholder:text-inputPlaceholder"
                   />
                   <View className="absolute right-4 top-0 bottom-0 justify-center pointer-events-none">
                     <Text className="text-[10px] text-textSubtle">▼</Text>
@@ -252,14 +239,13 @@ export const LoginForm = () => {
               <View className="w-full h-12 flex-row items-center rounded-xl border px-4 transition-colors bg-inputBg border-inputBorder">
                 <Image
                   source={{ uri: 'https://cdn-icons-png.flaticon.com/512/542/542689.png' }}
-                  style={{ width: 16, height: 16, tintColor: colors.textSubtle, marginRight: 10 }}
+                  className="w-4 h-4 mr-2.5 tint-textSubtle"
                 />
                 <TextInput
                   placeholder="sarah.miller@example.com"
-                  placeholderTextColor={colors.inputPlaceholder}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  className="flex-1 h-full text-[14px] outline-none text-text"
+                  className="flex-1 h-full text-[14px] outline-none text-text placeholder:text-inputPlaceholder"
                 />
               </View>
             </View>
@@ -272,9 +258,8 @@ export const LoginForm = () => {
                 </View>
                 <TextInput
                   placeholder="555-0123-456"
-                  placeholderTextColor={colors.inputPlaceholder}
                   keyboardType="phone-pad"
-                  className="flex-1 h-full px-4 text-[14px] outline-none text-text"
+                  className="flex-1 h-full px-4 text-[14px] outline-none text-text placeholder:text-inputPlaceholder"
                 />
               </View>
             </View>

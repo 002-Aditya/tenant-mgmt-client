@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
@@ -76,7 +77,7 @@ const NavigationWrapper = () => {
   };
 
   return (
-    <>
+    <View style={{ flex: 1 }} className={isDark ? 'dark bg-background' : 'bg-background'}>
       <NavigationContainer
         theme={
           isDark
@@ -87,7 +88,7 @@ const NavigationWrapper = () => {
         <AppNavigator />
       </NavigationContainer>
       <PortalHost />
-    </>
+    </View>
   );
 };
 
